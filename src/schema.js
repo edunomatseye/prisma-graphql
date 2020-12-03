@@ -47,7 +47,7 @@ const resolvers = {
             ///return posts.find((post) => post.id === Number(args.id))
             return prisma.post.findMany({
                 where: {
-                    id: Number(args.id)o-l[]`2q1    `
+                    id: Number(args.id)
                 }
             })
         },
