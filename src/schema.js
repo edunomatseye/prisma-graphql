@@ -1,4 +1,5 @@
 const { gql } = require('apollo-server');
+const { prisma } = require('./db')
 
 const posts = [
     {
@@ -43,7 +44,12 @@ const typeDefs = gql`
 const resolvers = {
     Query: {
         post: (parent, args, ctx, info) => {
-            return posts.find((post) => post.id === Number(args.id))
+            ///return posts.find((post) => post.id === Number(args.id))
+            return prisma.post.findMany({
+                where: {
+                    id: Number(args.id)o-l[]`2q1    `
+                }
+            })
         },
 
         feed: (parent, args, ctx, info) => {
