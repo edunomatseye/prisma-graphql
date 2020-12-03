@@ -1,4 +1,5 @@
 const { gql } = require('apollo-server');
+const { prisma } = require('./db')
 
 const posts = [
     {
@@ -43,29 +44,51 @@ const typeDefs = gql`
 const resolvers = {
     Query: {
         post: (parent, args, ctx, info) => {
-            return posts.find((post) => post.id === Number(args.id))
+            ///return posts.find((post) => post.id === Number(args.id))
+            return prisma.post.findOne({
+                where: {
+                    id: Number(args.id)
+                }
+            })
         },
 
         feed: (parent, args, ctx, info) => {
-            return posts.filter((post) => post.published)
+           // return posts.filter((post) => post.published)
+           return prisma.post.findMany({
+               where: {
+                   published: true,
+               }
+           })
         }
     },
 
     Mutation: {
         createDraft: (parent, args, ctx, info) => {
-            posts.push({
-                id: posts.length + 1,
-                title: args.title,
-                content: args.content,
-                published: false
+            // posts.push({
+            //     id: posts.length + 1,
+            //     title: args.title,
+            //     content: args.content,
+            //     published: false
+            // })
+            // return posts[posts.length - 1]
+            const {title, content} = args;
+            return prisma.post.create({
+                data: {
+                    title,
+                    content,
+                }
             })
-            return posts[posts.length - 1]
         },
 
         publish: (parent, args, ctx, info) => {
-            let postToPublish = posts.filter((post) => post.id === args.id)
-            postToPublish.published = true;
-            return postToPublish
+            // let postToPublish = posts.filter((post) => post.id === args.id)
+            // postToPublish.published = true;
+            // return postToPublish
+
+            return prisma.post.update({
+                where: { id: Number(args.id) },
+                data: { published: true }
+            })
         }
     },
 
