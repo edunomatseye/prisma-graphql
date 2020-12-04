@@ -1,2 +1,6 @@
 /node_modules
+<<<<<<< HEAD
 
+=======
+#prisma/.env
+>>>>>>> bb38a118c08e04f6320bf30a030879055ea5772f
